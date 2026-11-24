@@ -33,3 +33,19 @@ avr-objcopy -j .text -j .data -O ihex out/klipper.elf out/klipper.elf.hex
 ```
 
 Con un `avr-gcc`/binutils más modernos (por ejemplo los de Debian), ese paso no debería hacer falta.
+
+# Cómo se compiló `klipper_rp2040zero_v0.12.0.uf2`
+
+Mismo código (Klipper v0.12.0, sin cambios en `src/Kconfig`), con `gcc-arm-none-eabi` 13.2:
+
+```bash
+cat > .config <<'CFG'
+CONFIG_MACH_RPXXXX=y
+CONFIG_MACH_RP2040=y
+CFG
+make olddefconfig
+make
+```
+
+Opciones resultantes: sin bootloader (inicio en 0x10000100), flash W25Q080 con CLKDIV 2 y comunicación por USB.
+El archivo es `out/klipper.uf2`.

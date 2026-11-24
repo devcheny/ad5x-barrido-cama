@@ -70,7 +70,7 @@ En cada carpeta:
 - `3mf/ad5x_barrido_completo.3mf`: proyecto de OrcaSlicer con todas las piezas, una por placa (espátula, soporte fijo, tapa, base del servo y puerta), ya orientadas. PETG sobre PEI texturizada, 0,20 mm, con el G-code final del barrido ya puesto.
 - `solidcraft/` con los archivos fuente de SolidCraft de la base y del soporte fijo. Pégalos imanes con una gota de cianoacrilato y **comprueba la polaridad** antes: los de la espátula tienen que atraer a los de la cuna y la tapa.
 
-**Sin servo:** `soporte_fijo/` es la versión anterior, de una sola pieza, sin bisagra. Funciona con `variable_servo: ""` en `_PUERTA`. En ese caso la boquilla solo barre hasta X 155, y en Orca hay que excluir también los 30 mm de la derecha:
+**Sin servo:** `soporte_fijo/` es la versión anterior, de una sola pieza, sin bisagra. Funciona con `AJUSTE_BARRIDO NOMBRE=servo VALOR=""`. En ese caso la boquilla solo barre hasta X 155, y en Orca hay que excluir también los 30 mm de la derecha:
 `0x178,190x178,190x0,220x0,220x220,0x220`.
 
 > **Créditos:** `tapa_v5` es un remix de la [*Flashforge AD5X Cooling Fan Duct Mod* de H.P.](https://www.printables.com/model/1580430-flashforge-ad5x-cooling-fan-duct-mod), publicada bajo OCL.
@@ -92,6 +92,27 @@ En cada carpeta:
 Si alimentas el servo desde el Uno y alguna vez ves `Lost communication with MCU 'uno'`, el servo está tirando de más corriente de la que da el USB. Pásalo a una fuente aparte.
 
 ---
+
+## Alternativa: RP2040-Zero en lugar del Arduino Uno
+
+Una **Waveshare RP2040-Zero** hace lo mismo que el Uno, es mucho más pequeña y va por USB nativo (sin chip CH340). Usa `klipper/servo_rp2040.cfg` en lugar de `servo.cfg`; las macros no cambian.
+
+**Firmware:** `firmware/klipper_rp2040zero_v0.12.0.uf2` (Klipper v0.12.0 para RP2040, por USB).
+1. Mantén pulsado el botón **BOOT** de la placa y conéctala al ordenador. Aparece una unidad llamada `RPI-RP2`.
+2. Copia el `.uf2` a esa unidad. La placa se reinicia sola con Klipper.
+
+**Conexiones:**
+
+| Cable | RP2040-Zero |
+|---|---|
+| Naranja (señal del servo) | **GP29** |
+| Rojo (+5 V) | **5V** (o fuente aparte) |
+| Marrón (GND) | **GND** |
+| Sensor Hall (opcional) | VCC a **5V**, GND a **GND**, OUT a **GP28** |
+
+El condensador de 470–1000 µF va igual, entre 5V y GND junto al servo. La señal de 3,3 V del RP2040 la entiende el MG90S sin problema.
+
+**Puerto:** al conectarla a la impresora suele aparecer como `/dev/ttyACM0`. Si existe `/dev/serial/by-id/`, es mejor usar la ruta que aparece ahí (`usb-Klipper_rp2040_...-if00`), que no cambia aunque conectes más cosas.
 
 ## Firmware del Arduino Uno (`firmware/`)
 
@@ -123,7 +144,7 @@ La AD5X usa una versión de Klipper 12 de Flashforge que no indica su número ex
 
 > Mientras `servo.cfg` esté incluido, **Klipper no arranca sin el Uno conectado**. Si lo desconectas, comenta el `include`.
 >
-> Si dejas `variable_servo: ""` en `_PUERTA`, todo funciona con un **soporte fijo**. En ese caso la boquilla solo barre hasta X 155.
+> Con `AJUSTE_BARRIDO NOMBRE=servo VALOR=""`, todo funciona con un **soporte fijo**. En ese caso la boquilla solo barre hasta X 155.
 
 ### Cola de Moonraker
 
@@ -172,11 +193,22 @@ La espátula alcanza piezas hasta Y ≈ 184,5. El límite en 178 deja unos milí
 
 ## Calibración
 
-Todo se ajusta en `barrido.cfg`.
+**No edites `barrido.cfg`.** Los ajustes se cambian desde la consola de Fluidd/Mainsail con `AJUSTE_BARRIDO`. Se guardan en `mod_data/variables.cfg` (con el prefijo `barrido_`), se aplican al momento sin reiniciar y **no se pierden al actualizar** `barrido.cfg` a una versión nueva.
 
-1. **Espátula en el cabezal.** Comprueba `FILO`, los mm que el filo queda por debajo de la boquilla. Con `FILO=13` y `Z_BARRIDO=0.5`, la boquilla barre en Z 13,5.
-2. **Ángulos del servo.** Sin el brazo puesto, lanza `SET_SERVO SERVO=puerta ANGLE=…` y busca el ángulo de la puerta **recta** y el de la puerta **plegada** hacia fuera. Ponlos en `_PUERTA` (`angulo_recta`, `angulo_plegada`) y en `initial_angle` de `servo.cfg`. Los míos son 76° y 180°.
-3. **Posición del soporte.** Con la espátula enganchada en el cabezal y la puerta recta, monta la base en el pilar apoyando la cuna sobre la espátula (los imanes la sujetan) y aprieta los tornillos. Apunta la posición X/Y del cabezal en `dock_x` y `dock_y` de `COGER_ESPATULA`.
+```
+AJUSTE_BARRIDO                                  ; lista todos los ajustes (* = cambiado por ti)
+AJUSTE_BARRIDO NOMBRE=angulo_recta              ; muestra uno
+AJUSTE_BARRIDO NOMBRE=angulo_recta VALOR=80     ; lo cambia y lo guarda
+AJUSTE_BARRIDO NOMBRE=angulo_recta DEFECTO=1    ; vuelve al valor por defecto
+AJUSTE_BARRIDO NOMBRE=lentos VALOR=PETG,PCTG,ASA
+```
+
+Los valores por defecto están en la macro `_BARRIDO_AJUSTES`, al principio de `barrido.cfg`.
+
+
+1. **Espátula en el cabezal.** Comprueba `filo`, los mm que el filo queda por debajo de la boquilla. Con `filo` 13 y `z_barrido` 0,5, la boquilla barre en Z 13,5.
+2. **Ángulos del servo.** Sin el brazo puesto, lanza `SET_SERVO SERVO=puerta ANGLE=…` y busca el ángulo de la puerta **recta** y el de la puerta **plegada** hacia fuera. Guárdalos con `AJUSTE_BARRIDO NOMBRE=angulo_recta VALOR=…` y `NOMBRE=angulo_plegada`, y pon el de plegada también en `initial_angle` de `servo.cfg`. Los míos son 76° y 180°.
+3. **Posición del soporte.** Con la espátula enganchada en el cabezal y la puerta recta, monta la base en el pilar apoyando la cuna sobre la espátula (los imanes la sujetan) y aprieta los tornillos. Guarda la posición X/Y del cabezal con `AJUSTE_BARRIDO NOMBRE=dock_x VALOR=…` y `NOMBRE=dock_y`.
    - Con el desvío de ZMOD (`variable_min_y: 4` en `_CLIENT_VARIABLE`), `dock_y` puede llegar hasta −3. Si tu soporte queda más atrás, sube `min_y` en la misma cantidad.
 4. **Pruebas:**
    ```
@@ -194,9 +226,9 @@ Todo se ajusta en `barrido.cfg`.
    ```
    Para barrer toda la cama: `EXCLUDE_OBJECT_DEFINE RESET=1`, luego `GUARDAR_ALTURA H=20 MAT=PLA` y `BARRER_CAMA`.
 
-### Parámetros principales de `BARRER_CAMA`
+### Ajustes principales
 
-Se pueden cambiar en el archivo o pasar en la línea de Moonraker, por ejemplo `BARRER_CAMA TEMP_CAMA=32`.
+En `AJUSTE_BARRIDO` van en minúsculas (`NOMBRE=temp_cama`). También se pueden pasar en mayúsculas a `BARRER_CAMA` para una sola vez, por ejemplo `BARRER_CAMA TEMP_CAMA=32`.
 
 | Parámetro | Por defecto | Qué hace |
 |---|---|---|
@@ -215,9 +247,11 @@ Se pueden cambiar en el archivo o pasar en la línea de Moonraker, por ejemplo `
 | `REHOME_MIN` | 150 | Subida de la báscula a partir de la cual una pasada se considera con esfuerzo y hace home. Por debajo es ruido (unos ±60). |
 | `TRAMO_Z` | 3 | mm por tramo al subir la cama hasta la espátula. Entre tramos lee la báscula: si sube más de `UMBRAL`, aparta la cama, deja la espátula y pausa la cola. |
 
-Materiales (en `GUARDAR_ALTURA`): `variable_a_mano: "TPU"` lista los que no se barren y `variable_lentos: "PETG,PCTG"` los que se empujan despacio.
+Materiales: `a_mano` (`TPU`) lista los que no se barren y `lentos` (`PETG,PCTG`) los que se empujan a `vel_lento`. Separados por comas, sin espacios.
 
-Bajada de la cama al final (en `M73`): `bajada` 25 %, `minutos` 10, `porcentaje` 50. Con `bajada` en 0 queda desactivado.
+Otros: `servo` (vacío = soporte fijo), `sensor` (sensor Hall), `espera_servo`, `espera_bascula`, `recorrido`, `retirada`, `z_min`, `vel_lenta`, `acel`. La lista completa sale con `AJUSTE_BARRIDO`.
+
+Bajada de la cama al final (`M73`): `bajada` 25 %, `minutos` 10, `porcentaje` 50. Con `bajada` en 0 queda desactivado.
 
 ---
 
