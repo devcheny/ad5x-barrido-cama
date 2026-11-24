@@ -1,0 +1,7 @@
+# Añadir a mod_data/user.moonraker.conf (ZMOD)
+[job_queue]
+load_on_startup: False
+automatic_transition: True
+job_transition_delay: 5
+job_transition_gcode:
+  BARRER_CAMA
