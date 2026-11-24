@@ -9,7 +9,8 @@ Impresión en serie para la **Flashforge AD5X con ZMOD**. Al terminar cada traba
 
 Las piezas demasiado altas, las de materiales que se pegan demasiado o las que no se despegan se quedan en la cama. En esos casos **la cola se pausa** para que las retires a mano.
 
-Modelos para imprimir en Printables: <https://www.printables.com/model/1927461-ad5x-barrido-automatico-de-la-cama-con-espatula-y>
+- Modelos para imprimir en Printables: <https://www.printables.com/model/1927461-ad5x-barrido-automatico-de-la-cama-con-espatula>
+- Repositorio: <https://github.com/devcheny/ad5x-barrido-cama/>
 
 ![Soporte abatible con el servo, montado en el pilar delantero derecho](docs/soporte_servo.jpg)
 

@@ -45,7 +45,7 @@ El proyecto `.3mf` incluye la orientación y los ajustes que he usado: 0,20 mm, 
 
 ### Software
 Las macros de Klipper, el firmware del Uno, la configuración de Moonraker y Orca, y la guía de montaje y calibración completa están en GitHub:
-**➜ [enlace a tu repositorio]**
+**➜ https://github.com/devcheny/ad5x-barrido-cama/**
 
 ### Avisos
 - Probado en una sola AD5X: **calibra las posiciones en la tuya**.
