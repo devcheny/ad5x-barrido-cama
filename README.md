@@ -21,7 +21,7 @@ Modelos para imprimir en Printables: <https://www.printables.com/model/1927461-a
 
 | | |
 |---|---|
-| **Solo barre cuando es seguro** | Piezas de hasta 80 mm de alto (`ALTURA_MAX`), siempre dentro del alcance de la espátula. |
+| **Solo barre cuando es seguro** | Piezas de hasta 80 mm de alto a ras de cama (`ALTURA_MAX`, lo que cabe bajo el puente delantero). De 80 a 150 mm (`ALTURA_TOPE`) hace una primera ronda con la cama más baja, para que la pieza pase bajo el puente, y otra a ras de cama para la línea de purga. Siempre dentro del alcance de la espátula. |
 | **Sabe dónde están las piezas** | El G-code final guarda la altura, el material y la zona que ocupan las piezas (`EXCLUDE_OBJECT`) antes de que ZMOD borre la lista. Solo hace las pasadas necesarias y entra justo detrás de las piezas. |
 | **Empuje lento para PETG/PCTG** | 5 mm/s en lugar de 15 mm/s: el motor tiene más fuerza y es más difícil que pierda pasos. |
 | **Detección de piezas pegadas** | Empuja en tramos de 5 mm y lee la **báscula de la cama** (`weightValue`). Si sube más de +300 y sigue alta 4 s después, lo trata como atasco. Levanta la espátula y espera 5 min antes de reintentar, hasta 3 veces. Si la pieza no se suelta, deja la espátula y pausa la cola. Un pico breve al despegar no cuenta como atasco. |
@@ -199,7 +199,8 @@ Se pueden cambiar en el archivo o pasar en la línea de Moonraker, por ejemplo `
 
 | Parámetro | Por defecto | Qué hace |
 |---|---|---|
-| `ALTURA_MAX` | 80 | mm. Las piezas más altas se retiran a mano. |
+| `ALTURA_MAX` | 80 | mm que caben bajo el puente delantero barriendo a ras de cama. |
+| `ALTURA_TOPE` | 150 | mm. Las piezas más altas se retiran a mano. Entre `ALTURA_MAX` y este valor, la primera ronda empuja `altura − ALTURA_MAX` mm por encima de la cama. |
 | `TEMP_CAMA` | 28 | °C. Barre cuando la cama baja de esta temperatura. En verano, súbelo. |
 | `FILO` / `Z_BARRIDO` | 13 / 0,5 | Altura de barrido. |
 | `ESP_DX` / `ESP_DY` | 5 / 37,5 | Posición de la cara de empuje respecto a la boquilla. |

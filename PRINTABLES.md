@@ -20,7 +20,7 @@
 **Impresión en serie para la Flashforge AD5X con ZMOD.** Al terminar cada trabajo de la cola de Moonraker, la impresora enfría la cama y saca una espátula de un soporte abatible movido por un servo. La espátula se engancha al cabezal con una cola de milano. La impresora empuja las piezas fuera de la cama, deja la espátula y lanza la siguiente impresión.
 
 ### Qué hace
-- Solo barre piezas de hasta 80 mm de alto. Si la pieza es más alta o el material no se puede barrer, **pausa la cola** para que la retires a mano.
+- Barre piezas de hasta 150 mm de alto: las de más de 80 mm las empuja primero más arriba, para que pasen bajo el puente delantero, y luego repasa a ras de cama. Si la pieza es más alta o el material no se puede barrer, **pausa la cola** para que la retires a mano.
 - Sabe dónde están las piezas (Excluir objetos) y solo hace las pasadas necesarias.
 - **Empuje lento para PETG**, con home de X/Y después de cada pasada para recuperar posibles pasos perdidos.
 - **Detecta piezas pegadas con la báscula de la cama.** Reintenta hasta 3 veces, con 5 minutos de espera entre intentos. Si la pieza no se suelta, deja la espátula y pausa la cola.
@@ -45,7 +45,7 @@ El proyecto `.3mf` incluye la orientación y los ajustes que he usado: 0,20 mm, 
 
 ### Software
 Las macros de Klipper, el firmware del Uno, la configuración de Moonraker y Orca, y la guía de montaje y calibración completa están en GitHub:
-**➜ https://github.com/devcheny/ad5x-barrido-cama **
+**➜ [enlace a tu repositorio]**
 
 ### Avisos
 - Probado en una sola AD5X: **calibra las posiciones en la tuya**.
