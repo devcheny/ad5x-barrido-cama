@@ -213,6 +213,7 @@ Se pueden cambiar en el archivo o pasar en la línea de Moonraker, por ejemplo `
 | `INTENTOS` / `ESPERA` | 3 / 300 | Reintentos y segundos de espera entre ellos. |
 | `REHOME` / `REHOME_X` | 1 / 1 | Home de Y y de X después de las pasadas con esfuerzo y siempre antes de dejar la espátula. |
 | `REHOME_MIN` | 150 | Subida de la báscula a partir de la cual una pasada se considera con esfuerzo y hace home. Por debajo es ruido (unos ±60). |
+| `TRAMO_Z` | 3 | mm por tramo al subir la cama hasta la espátula. Entre tramos lee la báscula: si sube más de `UMBRAL`, aparta la cama, deja la espátula y pausa la cola. |
 
 Materiales (en `GUARDAR_ALTURA`): `variable_a_mano: "TPU"` lista los que no se barren y `variable_lentos: "PETG,PCTG"` los que se empujan despacio.
 
