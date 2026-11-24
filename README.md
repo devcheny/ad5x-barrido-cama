@@ -211,7 +211,8 @@ Se pueden cambiar en el archivo o pasar en la línea de Moonraker, por ejemplo `
 | `VEL` | 900 (300 PETG) | mm/min al empujar. |
 | `UMBRAL` | 300 | Subida de la báscula que se considera atasco. Con 0 solo registra. |
 | `INTENTOS` / `ESPERA` | 3 / 300 | Reintentos y segundos de espera entre ellos. |
-| `REHOME` / `REHOME_X` | 1 / 1 | Home de Y y de X después de cada pasada. |
+| `REHOME` / `REHOME_X` | 1 / 1 | Home de Y y de X después de las pasadas con esfuerzo y siempre antes de dejar la espátula. |
+| `REHOME_MIN` | 150 | Subida de la báscula a partir de la cual una pasada se considera con esfuerzo y hace home. Por debajo es ruido (unos ±60). |
 
 Materiales (en `GUARDAR_ALTURA`): `variable_a_mano: "TPU"` lista los que no se barren y `variable_lentos: "PETG,PCTG"` los que se empujan despacio.
 
