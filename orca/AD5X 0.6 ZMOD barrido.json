@@ -1,0 +1,18 @@
+{
+    "from": "User",
+    "inherits": "Flashforge AD5X 0.6 nozzle",
+    "is_custom_defined": "0",
+    "name": "AD5X 0.6 ZMOD barrido",
+    "printer_settings_id": "AD5X 0.6 ZMOD barrido",
+    "version": "2.3.1.0",
+    "machine_start_gcode": "START_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]",
+    "machine_end_gcode": "GUARDAR_ALTURA H=[max_layer_z] MAT={filament_type[initial_tool]}\nEND_PRINT",
+    "before_layer_change_gcode": ";BEFORE_LAYER_CHANGE\n;[layer_z]\nSET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1}\n_CAPA N={layer_num} Z={layer_z}",
+    "bed_exclude_area": [
+        "0x178",
+        "220x178",
+        "220x220",
+        "0x220"
+    ],
+    "printer_notes": "Perfil para ZMOD + barrido automático de la cama (https://github.com/devcheny/ad5x-barrido-cama/). Autor: cheny3d (https://www.instagram.com/cheny3d/)."
+}

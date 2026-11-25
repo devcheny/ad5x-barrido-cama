@@ -171,6 +171,9 @@ Cómo funciona la cola de Moonraker:
 
 ## OrcaSlicer
 
+**Perfiles listos** (`orca/`): uno por boquilla (0.25, 0.4, 0.6 y 0.8), basados en los perfiles oficiales *Flashforge AD5X* de Orca, con el G-code de inicio y final de ZMOD, `_CAPA` y la zona excluida ya puestos. Impórtalos con **Archivo → Importar → Importar configuraciones** y elige la impresora *AD5X 0.4 ZMOD barrido* (o la de tu boquilla). Si prefieres ajustar tu propio perfil a mano, esto es lo que cambian:
+
+
 **G-code final de la impresora:**
 
 ```
