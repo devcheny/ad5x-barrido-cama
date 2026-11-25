@@ -47,6 +47,9 @@ El proyecto `.3mf` incluye la orientación y los ajustes que he usado: 0,20 mm, 
 Las macros de Klipper, el firmware del Uno, la configuración de Moonraker y Orca, y la guía de montaje y calibración completa están en GitHub:
 **➜ https://github.com/devcheny/ad5x-barrido-cama/**
 
+### Sígueme
+El proceso de esta modificación y otras, en Instagram: **[@cheny3d](https://www.instagram.com/cheny3d/)**
+
 ### Avisos
 - Probado en una sola AD5X: **calibra las posiciones en la tuya**.
 - El PETG se pega muchísimo a la PEI lisa. Usa PEI texturizada o un antiadherente.

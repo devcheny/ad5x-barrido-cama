@@ -11,6 +11,7 @@ Las piezas demasiado altas, las de materiales que se pegan demasiado o las que n
 
 - Modelos para imprimir en Printables: <https://www.printables.com/model/1927461-ad5x-barrido-automatico-de-la-cama-con-espatula>
 - Repositorio: <https://github.com/devcheny/ad5x-barrido-cama/>
+- Instagram: [@cheny3d](https://www.instagram.com/cheny3d/), con el proceso de esta modificación y otras.
 
 ![Soporte abatible con el servo, montado en el pilar delantero derecho](docs/soporte_servo.jpg)
 
@@ -177,6 +178,14 @@ GUARDAR_ALTURA H=[max_layer_z] MAT={filament_type[initial_tool]}
 END_PRINT
 ```
 
+**G-code antes del cambio de capa** (opcional, para barrer antes las piezas pequeñas): añade al final
+
+```
+_CAPA N={layer_num} Z={layer_z}
+```
+
+Con esto la impresora mide el filamento de la primera capa y calcula la superficie pegada a la cama. Si por pieza es menor que `area_temprano` (500 mm²), el primer intento se hace cuando la cama baja de `temp_temprano` (40 °C) en lugar de esperar a `temp_cama` (28 °C). Si alguna pieza no se despega, la deja, espera a `temp_cama` y repite con los reintentos normales. Sin esta línea todo funciona igual, pero siempre espera a `temp_cama`.
+
 **Proceso → Otros:** activa **Etiquetar / Excluir objetos**, para que el G-code incluya `EXCLUDE_OBJECT_DEFINE`.
 
 **Impresora → Zona excluida de la cama:** el fondo de la cama, al que no llega la espátula:
@@ -235,6 +244,7 @@ En `AJUSTE_BARRIDO` van en minúsculas (`NOMBRE=temp_cama`). También se pueden 
 | `ALTURA_MAX` | 80 | mm que caben bajo el puente delantero barriendo a ras de cama. |
 | `ALTURA_TOPE` | 150 | mm. Las piezas más altas se retiran a mano. Entre `ALTURA_MAX` y este valor, la primera ronda empuja `altura − ALTURA_MAX` mm por encima de la cama. |
 | `TEMP_CAMA` | 28 | °C. Barre cuando la cama baja de esta temperatura. En verano, súbelo. |
+| `TEMP_TEMPRANO` / `AREA_TEMPRANO` | 40 / 500 | Piezas de menos de 500 mm² pegados (por pieza): primer intento a 40 °C. Con `temp_temprano` en 0 queda desactivado. Necesita `_CAPA` en Orca. |
 | `FILO` / `Z_BARRIDO` | 13 / 0,5 | Altura de barrido. |
 | `ESP_DX` / `ESP_DY` | 5 / 37,5 | Posición de la cara de empuje respecto a la boquilla. |
 | `Y_MAX` / `Y_LATERAL` | 225 / 220 | Límites del fondo: hasta dónde entra en línea recta y hasta dónde se puede mover en X. |
@@ -262,6 +272,10 @@ Bajada de la cama al final (`M73`): `bajada` 25 %, `minutos` 10, `porcentaje` 50
 - Las primeras veces, quédate cerca o mira la cámara.
 
 ---
+
+## Autor
+
+Hecho por **cheny3d**. Sigue el proceso de este proyecto y de otras modificaciones en Instagram: [@cheny3d](https://www.instagram.com/cheny3d/).
 
 ## Licencia
 
